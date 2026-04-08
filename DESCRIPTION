@@ -1,0 +1,28 @@
+Package: [repo-name]
+Title: [Paper title]
+Version: 1.0.0
+Authors@R:
+    person("[First name]", "[Last name]",
+           email = "[email@institution.edu]",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "[0000-0000-0000-0000]"))
+Description:
+    Research compendium for a systematic review using the Structural Topic
+    Model (STM) R package to analyse bibliographic metadata from
+    [brief description of corpus]. Contains all code required to reproduce
+    the analysis and figures reported in the paper.
+License: MIT + file LICENSE
+Depends:
+    R (>= 4.5.2)
+Imports:
+    stm,
+    stminsights,
+    tidyverse,
+    tidytext,
+    here,
+    forcats,
+    stringr,
+    viridis,
+    gt,
+    renv
+Encoding: UTF-8
