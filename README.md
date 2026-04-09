@@ -33,8 +33,9 @@ The underlying dataset is archived on Zenodo: [https://doi.org/10.5281/zenodo.19
 
 ## Data
 
-The raw dataset is not included in this repository. Download `dataset.csv`
-from the Zenodo deposit (link above) and place it in `data/raw/` before
+The raw dataset is not included in this repository. Download 
+`peru_trc_bibliography_2003_2024.csv` from the Zenodo deposit 
+(link above) and place it in `data/raw/` before
 running the scripts.
 
 Processed data and model objects are not included either — they are
