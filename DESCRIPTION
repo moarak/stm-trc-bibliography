@@ -1,16 +1,15 @@
-Package: [repo-name]
-Title: [Paper title]
+Package: stm-trc-bibliography
 Version: 1.0.0
 Authors@R:
-    person("[First name]", "[Last name]",
-           email = "[email@institution.edu]",
+    person("Arakaki", "Mónica",
+           email = "monica.arakaki@pucp.edu.pe",
            role = c("aut", "cre"),
-           comment = c(ORCID = "[0000-0000-0000-0000]"))
+           comment = c(ORCID = "0000-0002-6543-7962"))
 Description:
-    Research compendium for a systematic review using the Structural Topic
-    Model (STM) R package to analyse bibliographic metadata from
-    [brief description of corpus]. Contains all code required to reproduce
-    the analysis and figures reported in the paper.
+    Research compendium for using the Structural Topic
+    Model (STM) R package to analyse bibliographic metadata on Peru's
+    Truth and Reconciliation Commission. Contains all code required to reproduce
+    the analysis and figures.
 License: MIT + file LICENSE
 Depends:
     R (>= 4.5.2)

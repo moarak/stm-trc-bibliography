@@ -1,17 +1,13 @@
-# [Paper title]
-
-<!-- Once the repository is on GitHub and linked to Zenodo, replace the badge below -->
-<!-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX) -->
 
 ## Overview
 
-This repository contains the analysis code for:
+This repository contains the R code for conducting a topic modeling analysis.
 
-> [Author(s)]. ([Year]). *[Paper title]*. Manuscript in preparation.
+The analysis uses the [Structural Topic Model (STM)](https://www.structuraltopicmodel.com/) 
+R package to examine bibliographic metadata related to the Peruvian Truth and
+Reconciliation Commission and its Final Report.
 
-The analysis uses the [Structural Topic Model (STM)](https://www.structuraltopicmodel.com/) R package to examine bibliographic metadata from [brief description of corpus].
-
-The underlying dataset is archived on Zenodo: [insert DOI link once available]
+The underlying dataset is archived on Zenodo: [https://doi.org/10.5281/zenodo.19420345]
 
 ## Repository structure
 
