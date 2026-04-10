@@ -108,7 +108,7 @@ for (k in names(stm_models_list)) {
   # Extract numeric K for filename
   k_value <- gsub("K_", "", k)
   
-  # Save topic quality plot (TIFF)
+  # Save topic quality plot
   png(
     here("output", "figures",
          paste0("fig_topic_quality_k", k_value, ".png")),
