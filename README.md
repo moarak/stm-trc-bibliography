@@ -1,5 +1,7 @@
 
-## Overview
+## Structural topic model analysis of Peru's Truth and Reconciliation Commission bibliographic metadata (2003-2024)
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19955124.svg)](https://doi.org/10.5281/zenodo.19955124)
 
 This repository is a research compendium containing the R code, 
 session information, and outputs for a structural topic model 
