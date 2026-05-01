@@ -9,8 +9,7 @@ It is intended to make the analysis fully reproducible.
 
 The underlying dataset is archived on Zenodo: 
 [Bibliographic metadata on Peru's Truth and Reconciliation Commission: 
-A curated dataset (2003–2024)]
-(https://doi.org/10.5281/zenodo.19420345)
+A curated dataset (2003–2024)](https://doi.org/10.5281/zenodo.19420345)
 
 ## Repository structure
 
