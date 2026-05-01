@@ -1,13 +1,16 @@
 
 ## Overview
 
-This repository contains the R code for conducting a topic modeling analysis.
+This repository is a research compendium containing the R code, 
+session information, and outputs for a structural topic model 
+(STM) analysis of bibliographic metadata related to Peru's Truth 
+and Reconciliation Commission (TRC) and its Final Report. 
+It is intended to make the analysis fully reproducible. 
 
-The analysis uses the [Structural Topic Model (STM)](https://www.structuraltopicmodel.com/) 
-R package to examine bibliographic metadata related to the Peruvian Truth and
-Reconciliation Commission and its Final Report.
-
-The underlying dataset is archived on Zenodo: [https://doi.org/10.5281/zenodo.19420345]
+The underlying dataset is archived on Zenodo: 
+[Bibliographic metadata on Peru's Truth and Reconciliation Commission: 
+A curated dataset (2003–2024)]
+(https://doi.org/10.5281/zenodo.19420345)
 
 ## Repository structure
 

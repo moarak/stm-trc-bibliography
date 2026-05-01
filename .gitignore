@@ -16,3 +16,6 @@ renv/library/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Submission files (journal specific)
+submission/
