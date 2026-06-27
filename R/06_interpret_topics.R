@@ -12,6 +12,7 @@
 #
 # Inputs:
 #   - data/models/stm_model_final.rds
+#   - data/models/stm_effects.rds
 #   - data/processed/stm_meta.rds
 #
 # Outputs:
@@ -21,7 +22,6 @@
 #   - output/figures/fig_topic_prevalence_doc_type.png
 #   - output/figures/fig_topic_prevalence_concept.png
 #   - output/figures/fig_topic_prevalence_language_orig.png
-#   - data/models/stm_effects.rds
 # ============================================================
 
 
@@ -31,7 +31,6 @@ library(stminsights)
 library(tidyverse)
 library(here)
 library(tidytext)
-library(viridis)
 
 # ---- Create output directories (if not existing) ----
 dir.create(here("output", "figures"), recursive = TRUE, showWarnings = FALSE)
@@ -45,16 +44,22 @@ stm_model_final <- readRDS(
   here("data", "models", "stm_model_final.rds")
 )
 
+effect_model <- readRDS(
+  here("data", "models", "stm_effects.rds")
+)
+
 meta <- readRDS(
   here("data", "processed", "stm_meta.rds")
 )
+
+K <- stm_model_final$settings$dim$K
 
 
 # ============================================================
 # 2. Figure — Topic prevalence summary (corpus-level)
 # ============================================================
 
-# Base R plot saved with png()/dev.off() — STM summary plot has no ggplot2 equivalent
+# PNG for compendium reproducibility
 png(
   here("output", "figures", "fig_topic_prevalence_summary.png"),
   width = 8, height = 6, units = "in", res = 300
@@ -99,27 +104,7 @@ ggsave(
 
 
 # ============================================================
-# 4. Estimate covariate effects
-# ============================================================
-
-# Determine K dynamically from model
-K <- stm_model_final$settings$dim$K
-
-effect_model <- estimateEffect(
-  1:K ~ s(publication_year) + doc_type + unbis_concept + language_orig,
-  stm_model_final,
-  metadata = meta,
-  uncertainty = "Global"
-)
-
-saveRDS(
-  effect_model,
-  here("data", "models", "stm_effects.rds")
-)
-
-
-# ============================================================
-# 5. Figure — Expected topic proportions by publication year
+# 4. Figure — Expected topic proportions by publication year
 # ============================================================
 
 effects_publication_year_df <- get_effects(
@@ -129,15 +114,16 @@ effects_publication_year_df <- get_effects(
 )
 
 fig_topic_prevalence_publication_year <- effects_publication_year_df %>%
-  ggplot(aes(x = value, y = proportion)) +
+  ggplot(aes(x = value, y = proportion, ymin = lower, ymax = upper)) +
+  geom_ribbon(alpha = 0.2) +
   geom_line() +
-  facet_wrap(~ topic) +
+  facet_wrap(~ topic,
+             labeller = as_labeller(\(x) paste("Topic", x))) +
   labs(
-    title = "Expected topic proportions by publication year",
+    title = "Topical prevalence by year of publication",
     x = "Year",
-    y = "Expected proportion"
-  ) +
-  theme_minimal()
+    y = "Estimated proportion"
+  )
 
 ggsave(
   filename = here("output", "figures",
@@ -148,7 +134,7 @@ ggsave(
 
 
 # ============================================================
-# 6. Figure — Expected topic proportions by document type
+# 5. Figure — Expected topic proportions by document type
 # ============================================================
 
 effects_doc_type_df <- get_effects(
@@ -157,21 +143,16 @@ effects_doc_type_df <- get_effects(
   type = "pointestimate"
 )
 
-fig_topic_prevalence_doc_type <- ggplot(
-  effects_doc_type_df, aes(x = topic, y = value, fill = proportion)) +
-  geom_tile(color = "white") +
-  scale_fill_viridis_c(option = "magma", direction = -1,
-                       limits = c(0.0, 1.0)) +
-  theme_minimal() +
+fig_topic_prevalence_doc_type <- effects_doc_type_df %>%
+  ggplot(aes(x = value, y = proportion, ymin = lower, ymax = upper)) +
+  geom_pointrange() +
+  facet_wrap(~ topic, 
+             labeller = as_labeller(\(x) paste("Topic", x))) +
+  coord_flip(ylim = c(-0.25, 1)) +
   labs(
-    title = "Expected topic proportions by document type",
-    x = "Topic",
-    y = "",
-    fill = "Proportion"
-  ) +
-  theme(
-    panel.grid = element_blank(),
-    axis.text.x = element_text(angle = 0) # Keep topic numbers horizontal
+    title = "Topical prevalence by document type",
+    x = "Document type",
+    y = "Estimated proportion"
   )
 
 ggsave(
@@ -183,7 +164,7 @@ ggsave(
 
 
 # ============================================================
-# 7. Figure — Expected topic proportions by UNBIS concept
+# 6. Figure — Expected topic proportions by UNBIS concept
 # ============================================================
 
 effects_concept_df <- get_effects(
@@ -192,25 +173,16 @@ effects_concept_df <- get_effects(
   type = "pointestimate"
 )
 
-# Clamp negative proportions to 0 (artefact of estimation uncertainty)
-effects_concept_df <- effects_concept_df %>%
-  mutate(proportion = ifelse(proportion < 0, 0, proportion))
-
-fig_topic_prevalence_concept <- ggplot(
-  effects_concept_df, aes(x = topic, y = value, fill = proportion)) +
-  geom_tile(color = "white") +
-  scale_fill_viridis_c(option = "magma", direction = -1,
-                       limits = c(0.0, 1.0)) +
-  theme_minimal() +
+fig_topic_prevalence_concept <- effects_concept_df %>%
+  ggplot(aes(x = value, y = proportion, ymin = lower, ymax = upper)) +
+  geom_pointrange() +
+  facet_wrap(~ topic,
+             labeller = as_labeller(\(x) paste("Topic", x))) +
+  coord_flip(ylim = c(-0.25, 1)) +
   labs(
-    title = "Expected topic proportions by UNBIS concept",
-    x = "Topic",
-    y = "",
-    fill = "Proportion"
-  ) +
-  theme(
-    panel.grid = element_blank(),
-    axis.text.x = element_text(angle = 0) # Keep topic numbers horizontal
+    title = "Topical prevalence by UNBIS concept",
+    x = "UNBIS concept",
+    y = "Estimated proportion"
   )
 
 ggsave(
@@ -222,7 +194,7 @@ ggsave(
 
 
 # ============================================================
-# 8. Figure — Expected topic proportion difference by language
+# 7. Figure — Expected topic proportion difference by language
 # ============================================================
 
 # Base R plot saved with png()/dev.off() — uses STM native plot method
@@ -237,8 +209,8 @@ plot(effect_model,
      model = stm_model_final,
      method = "difference",
      cov.value1 = "eng", cov.value2 = "spa",
-     main = "Expected topic proportion: difference by language of publication",
-     xlab = "More Spanish ... More English",
+     main = "Topical prevalence contrast by language of publication",
+     xlab = "Spanish ... English",
      labeltype = "custom",
      custom.labels = paste("Topic", 1:K),
      xlim = c(-0.5, 0.5))

@@ -8,7 +8,7 @@
 # Inputs:
 #   data/raw/peru_trc_bibliography_2003_2024.csv
 # Outputs:
-#   data/processed/data_selected.rds
+#   data/processed/dataset_selected.rds
 # ============================================================
 
 rm(list = ls())

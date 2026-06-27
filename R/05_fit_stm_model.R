@@ -5,6 +5,7 @@
 #   2. Estimate STM models across candidate K values
 #   3. Evaluate topic quality (semantic coherence & exclusivity)
 #   4. Select and save final STM model
+#   5. Estimate covariate effects
 #
 # Inputs:
 #   - data/processed/stm_documents.rds
@@ -17,6 +18,7 @@
 #   - data/models/searchK_results.rds
 #   - data/models/stm_models_list.rds
 #   - data/models/stm_model_final.rds
+#   - data/models/stm_effects.rds
 # ============================================================
 
 
@@ -132,4 +134,24 @@ stm_model_final <- stm_models_list[[paste0("K_", FINAL_K)]]
 saveRDS(
   stm_model_final,
   here("data", "models", "stm_model_final.rds")
+)
+
+
+# ============================================================
+# 5. Estimate covariate effects
+# ============================================================
+
+# Determine K dynamically from model
+K <- stm_model_final$settings$dim$K
+
+effect_model <- estimateEffect(
+  1:K ~ s(publication_year) + doc_type + unbis_concept + language_orig,
+  stm_model_final,
+  metadata = meta,
+  uncertainty = "Global"
+)
+
+saveRDS(
+  effect_model,
+  here("data", "models", "stm_effects.rds")
 )

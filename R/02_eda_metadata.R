@@ -40,8 +40,8 @@ publication_year_df <- bib_data %>%
 fig_publication_year <-
   ggplot(publication_year_df,
          aes(x = publication_year, y = n)) +
-  geom_line(color = "steelblue") +
-  geom_point(color = "steelblue") +
+  geom_line() +
+  geom_point() +
   labs(
     title = "Documents by year of publication",
     x = "Year",
@@ -57,7 +57,7 @@ fig_publication_year <-
   scale_y_continuous(limits = c(0, 25)) +
   theme_minimal()
 
-# PNG for compendium reproducibility; EPS for journal submission generated separately
+# PNG for compendium reproducibility
 ggsave(
   filename = here("output", "figures", "fig_publication_year.png"),
   plot = fig_publication_year,
